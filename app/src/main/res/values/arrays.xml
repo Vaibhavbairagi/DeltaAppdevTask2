@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="Group">
+        <item>Group A</item>
+        <item>Group B</item>
+        <item>Group C</item>
+        <item>Group D</item>
+    </string-array>
+    <string-array name="GroupAteams">
+        <item>RUS</item>
+        <item>KSA</item>
+        <item>URU</item>
+        <item>POR</item>
+        <item>ESP</item>
+        <item>MAR</item>
+        <item>IRA</item>
+        <item>EGY</item>
+    </string-array>
+    <string-array name="GroupBteams">
+        <item>FRA</item>
+        <item>AUS</item>
+        <item>PER</item>
+        <item>DEN</item>
+        <item>ARG</item>
+        <item>ISL</item>
+        <item>CRO</item>
+        <item>NGA</item>
+    </string-array>
+    <string-array name="GroupCteams">
+        <item>BRA</item>
+        <item>SUA</item>
+        <item>CRC</item>
+        <item>SRB</item>
+        <item>GER</item>
+        <item>MEX</item>
+        <item>SWE</item>
+        <item>KOR</item>
+    </string-array>
+    <string-array name="GroupDteams">
+        <item>BEL</item>
+        <item>PAN</item>
+        <item>TUN</item>
+        <item>ENG</item>
+        <item>POL</item>
+        <item>SEN</item>
+        <item>COL</item>
+        <item>JPN</item>
+    </string-array>
+</resources>

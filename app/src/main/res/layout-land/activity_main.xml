@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:background="@drawable/fifa1">
+
+    <com.ebanx.swipebtn.SwipeButton
+        android:id="@+id/swipebutton"
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="12dp"
+        app:button_image_enabled="@mipmap/football"
+        app:button_image_disabled="@mipmap/football"
+        app:button_left_padding="10dp"
+        app:button_top_padding="10dp"
+        app:button_bottom_padding="10dp"
+        app:button_right_padding="10dp"
+        app:inner_text="Swipe Football to enter"
+        app:inner_text_background="@drawable/roundedbutton"
+        app:inner_text_bottom_padding="8dp"
+        app:inner_text_color="@color/Black"
+        app:inner_text_size="15dp"
+        app:inner_text_top_padding="5dp"
+        tools:layout_editor_absoluteX="96dp"
+        tools:layout_editor_absoluteY="241dp">
+
+    </com.ebanx.swipebtn.SwipeButton>
+
+</RelativeLayout>

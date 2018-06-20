@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:background="@drawable/fifa">
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:id="@+id/maintoolbar"
+        android:minHeight="?attr/actionBarSize"
+        app:titleTextColor="@color/White"
+        android:background="@color/colorPrimary" >
+    </android.support.v7.widget.Toolbar>
+
+    <com.ebanx.swipebtn.SwipeButton
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="39dp"
+        app:inner_text_background="@drawable/roundedbutton"
+        app:inner_text_size="15dp"
+        app:inner_text="Hit Goal to enter"
+        app:inner_text_color="@color/White"
+        app:inner_text_bottom_padding="8dp"
+        app:inner_text_top_padding="5dp"
+        android:id="@+id/swipebutton"
+        app:button_image_enabled="@mipmap/goaltext"
+        app:button_image_disabled="@mipmap/football"
+        app:button_left_padding="10dp"
+        app:button_top_padding="10dp"
+        app:button_bottom_padding="10dp"
+        app:button_right_padding="10dp">
+
+    </com.ebanx.swipebtn.SwipeButton>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="84dp"
+        android:layout_height="125dp"
+        android:layout_alignEnd="@+id/swipebutton"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="22dp"
+        app:srcCompat="@drawable/soccergoal" />
+
+</RelativeLayout>

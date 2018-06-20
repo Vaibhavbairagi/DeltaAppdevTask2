@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/White"
+    android:layout_marginTop="10dp"
+    android:layout_marginEnd="12dp"
+    android:layout_marginStart="12dp"
+    android:id="@+id/card"
+    android:elevation="10dp"
+    app:cardBackgroundColor="@color/translucent">
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/team2image"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/team1image"
+        android:layout_marginEnd="10dp"
+        app:srcCompat="@android:drawable/ic_menu_camera" />
+
+    <ImageView
+        android:id="@+id/team1image"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/GroupName"
+        android:layout_marginStart="11dp"
+        app:srcCompat="@android:drawable/ic_menu_camera" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/teamname1"
+        android:layout_centerHorizontal="true"
+        android:text="v/s"
+        android:textColor="@color/Black"
+        android:textSize="18dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/GroupName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:text="GroupName"
+        android:textColor="@color/Black"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/teamname1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/team2image"
+        android:layout_toEndOf="@+id/team1image"
+        android:textColor="@color/Black"
+        android:textStyle="bold"
+        android:layout_marginStart="6dp"
+        android:textSize="20sp"
+        android:text="Team1" />
+
+    <TextView
+        android:id="@+id/teamname2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/team2image"
+        android:textSize="20sp"
+        android:layout_toStartOf="@+id/team2image"
+        android:layout_marginEnd="6dp"
+        android:text="Team2"
+        android:textColor="@color/Black"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/Date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:text="Date"
+        android:layout_marginTop="4dp"
+        android:textSize="15sp"
+        android:textColor="@color/Black"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/Time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Date"
+        android:textSize="15sp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="4dp"
+        android:text="Time"
+        android:textColor="@color/Black"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/Venue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Time"
+        android:layout_marginTop="4dp"
+        android:layout_centerHorizontal="true"
+        android:text="Venue"
+        android:layout_marginBottom="8dp"
+        android:textColor="@color/Black"
+        android:textStyle="bold"/>
+
+</RelativeLayout>
+</android.support.v7.widget.CardView>
