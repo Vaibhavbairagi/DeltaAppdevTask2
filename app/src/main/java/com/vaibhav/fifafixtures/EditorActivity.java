@@ -320,15 +320,11 @@ public class EditorActivity extends AppCompatActivity implements TimePickerDialo
             if (requestCode == REQUEST_CAMERA) {
                 Bundle bundle=data.getExtras();
                 Bitmap bmp=(Bitmap)Objects.requireNonNull(bundle).get("data");
-                try {
-                    uri=BitmaptoUri(bmp);
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
-                }
+                uri=BitmaptoUri(bmp);
                 Uri dest=Uri.fromFile(new File(getCacheDir(),"cropped"));
                 Crop.of(uri,dest).asSquare().start(this);
-            } else if (requestCode == REQUEST_GALLERY) {
+            }
+            else if (requestCode == REQUEST_GALLERY) {
                 if (data!=null){
                     uri=data.getData();
                     Uri dest=Uri.fromFile(new File(getCacheDir(),"cropped"));
@@ -349,19 +345,11 @@ public class EditorActivity extends AppCompatActivity implements TimePickerDialo
             }
             }
         }
-    public Uri BitmaptoUri(Bitmap inImage) throws IOException {
-        File tempDir= Environment.getExternalStorageDirectory();
-        tempDir=new File(tempDir.getAbsolutePath()+"/FifaLogos");
-        String pre="tempImage";String suf=".jpg";
-        File tempFile = File.createTempFile(pre, suf, tempDir);
+    public Uri BitmaptoUri(Bitmap inImage){
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        byte[] bitmapData = bytes.toByteArray();
-        FileOutputStream fos =  new FileOutputStream(tempFile);
-            fos.write(bitmapData);
-            fos.flush();
-            fos.close();
-        return FileProvider.getUriForFile(getApplicationContext(), "com.vaibhav.fifafixtures.provider",tempFile);
+        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), inImage, "tempImage", null);
+        return Uri.parse(path);
     }
 
     public byte[] ImageViewToByte(ImageView imageView){
