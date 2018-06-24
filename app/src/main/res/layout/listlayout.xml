@@ -42,7 +42,7 @@
         android:layout_below="@+id/teamname1"
         android:layout_centerHorizontal="true"
         android:text="v/s"
-        android:textColor="@color/Black"
+        android:textColor="@color/White"
         android:textSize="18dp"
         android:textStyle="bold" />
 
@@ -54,7 +54,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
         android:text="GroupName"
-        android:textColor="@color/Black"
+        android:textColor="@color/White"
         android:textSize="20sp"
         android:textStyle="bold" />
 
@@ -64,7 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/team2image"
         android:layout_toEndOf="@+id/team1image"
-        android:textColor="@color/Black"
+        android:textColor="@color/White"
         android:textStyle="bold"
         android:layout_marginStart="6dp"
         android:textSize="20sp"
@@ -79,7 +79,7 @@
         android:layout_toStartOf="@+id/team2image"
         android:layout_marginEnd="6dp"
         android:text="Team2"
-        android:textColor="@color/Black"
+        android:textColor="@color/White"
         android:textStyle="bold"/>
 
     <TextView
@@ -91,7 +91,7 @@
         android:text="Date"
         android:layout_marginTop="4dp"
         android:textSize="15sp"
-        android:textColor="@color/Black"
+        android:textColor="@color/White"
         android:textStyle="bold"/>
 
     <TextView
@@ -103,7 +103,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="4dp"
         android:text="Time"
-        android:textColor="@color/Black"
+        android:textColor="@color/White"
         android:textStyle="bold"/>
 
     <TextView
@@ -115,7 +115,7 @@
         android:layout_centerHorizontal="true"
         android:text="Venue"
         android:layout_marginBottom="8dp"
-        android:textColor="@color/Black"
+        android:textColor="@color/White"
         android:textStyle="bold"/>
 
 </RelativeLayout>

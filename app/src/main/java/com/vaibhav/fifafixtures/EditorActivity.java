@@ -1,5 +1,7 @@
 package com.vaibhav.fifafixtures;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.FragmentTransaction;
 import android.app.TimePickerDialog;
 import android.content.ActivityNotFoundException;
@@ -7,13 +9,22 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,8 +37,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.soundcloud.android.crop.Crop;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -41,9 +56,13 @@ import java.util.Objects;
 import jp.wasabeef.blurry.Blurry;
 
 public class EditorActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
+    public static final int REQUEST_CAMERA_CODE = 10;
+    public static final int EXTERNAL_REQUEST_CODE = 13;
+    public static final int INTERNAL_REQUEST_CODE = 19;
     Spinner team1spinner,team2spinner,groupnamespinner;
     MyDatabase myDB = new MyDatabase(this);
     Button done;
+    int gallerycheck=0;
     Context context;
     Bitmap bmp1=null,bmp2=null;
     Toolbar toolbar;
@@ -234,12 +253,23 @@ public class EditorActivity extends AppCompatActivity implements TimePickerDialo
         AlertDialog.Builder builder=new AlertDialog.Builder(EditorActivity.this);
         builder.setTitle("Add Photo");
         builder.setItems(chooseitems, new DialogInterface.OnClickListener() {
+
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(chooseitems[which].equals("Take photo"))
-                    callCamera();
-                else if(chooseitems[which].equals("Choose from Gallery"))
+                if(chooseitems[which].equals("Take photo")) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (ContextCompat.checkSelfPermission(EditorActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                            String[] permissionsRequested = {Manifest.permission.CAMERA};
+                            ActivityCompat.requestPermissions(EditorActivity.this, permissionsRequested, REQUEST_CAMERA_CODE);
+                        }
+                        else
+                            callCamera();
+                    } else
+                        callCamera();
+                }
+                else if(chooseitems[which].equals("Choose from Gallery")){
                     callGallery();
+                }
                 else if (chooseitems[which].equals("Cancel"))
                     dialog.dismiss();
             }
@@ -247,34 +277,41 @@ public class EditorActivity extends AppCompatActivity implements TimePickerDialo
         builder.show();
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode==REQUEST_CAMERA_CODE){
+            if (grantResults.length>0&&grantResults[0]==PackageManager.PERMISSION_GRANTED){
+                if (ContextCompat.checkSelfPermission(EditorActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED||
+                        ContextCompat.checkSelfPermission(EditorActivity.this,Manifest.permission.READ_EXTERNAL_STORAGE)!=PackageManager.PERMISSION_GRANTED) {
+                    String[] permissionsRequested = {Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE};
+                    ActivityCompat.requestPermissions(EditorActivity.this, permissionsRequested, EXTERNAL_REQUEST_CODE);
+                }
+            }
+            else{
+                Toast.makeText(context,"Camera Permission Denied",Toast.LENGTH_SHORT).show();
+            }
+        }
+        if (requestCode==EXTERNAL_REQUEST_CODE){
+            if (grantResults.length>0&&grantResults[0]==PackageManager.PERMISSION_GRANTED&&grantResults[1]==PackageManager.PERMISSION_GRANTED)
+                if (ContextCompat.checkSelfPermission(EditorActivity.this,Manifest.permission.READ_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED)
+            callCamera();
+            }
+            else
+                Toast.makeText(context,"Permission Denied",Toast.LENGTH_SHORT).show();
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
     public void callCamera(){
         Intent intent =new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent,REQUEST_CAMERA);
     }
     public void callGallery(){
+        gallerycheck=1;
         Intent intent=new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent,"Select File"),REQUEST_GALLERY);
-    }
-
-    public void CropImage(){
-        try {
-            Intent cropIntent=new Intent("com.android.camera.action.CROP");
-            cropIntent.setDataAndType(uri,"image/*");
-            cropIntent.putExtra("crop", true);
-            cropIntent.putExtra("aspectX", 1);
-            cropIntent.putExtra("aspectY", 1);
-            cropIntent.putExtra("outputX", 180);
-            cropIntent.putExtra("outputY", 180);
-            cropIntent.putExtra("scaleUpIfNeeded", true);
-            cropIntent.putExtra("return-data", true);
-            startActivityForResult(cropIntent, REQUEST_CROP);
-
-        }
-        catch (ActivityNotFoundException e){
-        }
-
     }
 
     @Override
@@ -283,69 +320,48 @@ public class EditorActivity extends AppCompatActivity implements TimePickerDialo
             if (requestCode == REQUEST_CAMERA) {
                 Bundle bundle=data.getExtras();
                 Bitmap bmp=(Bitmap)Objects.requireNonNull(bundle).get("data");
-                uri=BitmaptoUri(bmp);
-                CropImage();
+                try {
+                    uri=BitmaptoUri(bmp);
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Uri dest=Uri.fromFile(new File(getCacheDir(),"cropped"));
+                Crop.of(uri,dest).asSquare().start(this);
             } else if (requestCode == REQUEST_GALLERY) {
                 if (data!=null){
                     uri=data.getData();
-                    CropImage();
+                    Uri dest=Uri.fromFile(new File(getCacheDir(),"cropped"));
+                    Crop.of(uri,dest).asSquare().start(this);
                 }
             }
-            else if (requestCode==REQUEST_CROP){
-                Bundle bundle=data.getExtras();
-                Bitmap bmp= (Bitmap)Objects.requireNonNull(bundle).get("data");
+            else if (requestCode== Crop.REQUEST_CROP && resultCode==RESULT_OK){
                 if (t == 1) {
-                    team1logo.setImageBitmap(bmp);
-                    bmp1=bmp;
+                    team1logo.setImageURI(Crop.getOutput(data));
+                    bmp1=((BitmapDrawable)team1logo.getDrawable()).getBitmap();
                     img1 = ImageViewToByte(team1logo);
                 }
                 if (t == 2) {
-                    team2logo.setImageBitmap(bmp);
-                    bmp2=bmp;
+                    team2logo.setImageURI(Crop.getOutput(data));
+                    bmp2=((BitmapDrawable)team2logo.getDrawable()).getBitmap();
                     img2 = ImageViewToByte(team2logo);
                 }
             }
             }
         }
-    public Uri BitmaptoUri(Bitmap inImage){
+    public Uri BitmaptoUri(Bitmap inImage) throws IOException {
         File tempDir= Environment.getExternalStorageDirectory();
         tempDir=new File(tempDir.getAbsolutePath()+"/FifaLogos");
-        tempDir.mkdir();
-        File tempFile = null;
-        try {
-            tempFile = File.createTempFile("tempImage", ".jpg", tempDir);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        String pre="tempImage";String suf=".jpg";
+        File tempFile = File.createTempFile(pre, suf, tempDir);
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         byte[] bitmapData = bytes.toByteArray();
-
-        //write the bytes in file
-        FileOutputStream fos = null;
-        try {
-            if (tempFile!=null)
-            fos = new FileOutputStream(tempFile);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        try {
-            assert fos != null;
+        FileOutputStream fos =  new FileOutputStream(tempFile);
             fos.write(bitmapData);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
             fos.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
             fos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return Uri.fromFile(tempFile);
+        return FileProvider.getUriForFile(getApplicationContext(), "com.vaibhav.fifafixtures.provider",tempFile);
     }
 
     public byte[] ImageViewToByte(ImageView imageView){
@@ -358,7 +374,9 @@ public class EditorActivity extends AppCompatActivity implements TimePickerDialo
     public AdapterView.OnItemSelectedListener team1selcted=(new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
             assignteamlist();
+
             mteam1= parent.getSelectedItem().toString();
             int p=parent.getSelectedItemPosition();
             team.remove(p);
@@ -379,6 +397,7 @@ public class EditorActivity extends AppCompatActivity implements TimePickerDialo
     public AdapterView.OnItemSelectedListener team2selcted=(new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
             mteam2=parent.getSelectedItem().toString();
         }
 
@@ -395,6 +414,7 @@ public class EditorActivity extends AppCompatActivity implements TimePickerDialo
     public AdapterView.OnItemSelectedListener groupselected=(new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
             if(position == 0) {
                 groupposition=0;
                 mgrp= "Group A";

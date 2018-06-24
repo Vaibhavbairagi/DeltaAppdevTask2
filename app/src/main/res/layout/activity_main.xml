@@ -12,7 +12,7 @@
         android:id="@+id/maintoolbar"
         android:minHeight="?attr/actionBarSize"
         app:titleTextColor="@color/White"
-        android:background="@color/colorPrimary" >
+        android:background="@color/translucent1" >
     </android.support.v7.widget.Toolbar>
 
     <com.ebanx.swipebtn.SwipeButton

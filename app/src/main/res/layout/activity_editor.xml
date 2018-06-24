@@ -8,7 +8,7 @@
     tools:context=".EditorActivity"
     android:orientation="vertical"
     android:id="@+id/editorlayout"
-    android:background="@drawable/fifab5">
+    android:background="@drawable/fifab1">
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -41,7 +41,7 @@
         android:layout_marginStart="20dp"
         android:text="Select Group Name:"
         android:layout_marginTop="5dp"
-        android:textColor="@color/Black"
+        android:textColor="@color/White"
         android:textSize="18sp"
         android:textStyle="bold"
         android:layout_marginBottom="5dp"/>
@@ -52,7 +52,8 @@
         android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="20dp"
-        android:layout_marginTop="5dp" />
+        android:layout_marginTop="5dp"
+            />
 
     </RelativeLayout>
 </android.support.v7.widget.CardView>
@@ -78,7 +79,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
         android:text="Select Team 1:"
-        android:textColor="@color/Black"
+        android:textColor="@color/White"
         android:layout_marginStart="20dp"
 
         android:textSize="18sp"
@@ -114,7 +115,7 @@
         android:layout_marginBottom="5dp"
         android:layout_marginStart="20dp"
         android:text="Select Team 2:"
-        android:textColor="@color/Black"
+        android:textColor="@color/White"
         android:textSize="18sp"
         android:textStyle="bold" />
     <Spinner
@@ -123,7 +124,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="20dp"
-        android:layout_alignTop="@+id/t3" />
+        android:layout_alignTop="@+id/t3"
+        />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
     <android.support.v7.widget.CardView
@@ -146,7 +148,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="5dp"
         android:text="Enter Date:"
-        android:textColor="@color/Black"
+        android:textColor="@color/White"
         android:layout_marginStart="20dp"
         android:textSize="18sp"
         android:textStyle="bold" />
@@ -165,8 +167,8 @@
         android:layout_marginEnd="20dp"
         android:layout_alignParentEnd="true"
         android:inputType="date"
-        android:textColor="@color/Black"
-        android:backgroundTint="@color/Black"
+        android:textColor="@color/White"
+        android:backgroundTint="@color/White"
         />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
@@ -190,7 +192,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:text="Enter time:"
-        android:textColor="@color/Black"
+        android:textColor="@color/White"
         android:textSize="18sp"
         android:textStyle="bold" />
     <EditText
@@ -199,7 +201,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="20dp"
-        android:backgroundTint="@color/Black"
+        android:textColor="@color/White"
+        android:backgroundTint="@color/White"
         android:ems="10"
         android:inputType="time" />
 
@@ -232,7 +235,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginStart="20dp"
         android:text="Enter venue:"
-        android:textColor="@color/Black"
+        android:textColor="@color/White"
         android:textSize="18sp"
         android:textStyle="bold" />
     <EditText
@@ -240,7 +243,8 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:backgroundTint="@color/Black"
+        android:textColor="@color/White"
+        android:backgroundTint="@color/White"
         android:layout_marginEnd="20dp"
         android:inputType="text" />
 
@@ -272,7 +276,7 @@
         android:layout_marginTop="27dp"
         android:text="Select Team1 Logo:"
         android:layout_marginStart="20dp"
-        android:textColor="@color/Black"
+        android:textColor="@color/White"
         android:textSize="18sp"
         android:textStyle="bold" />
 
@@ -305,7 +309,7 @@
         android:layout_marginTop="27dp"
         android:layout_marginStart="20dp"
         android:text="Select Team2 Logo:"
-        android:textColor="@color/Black"
+        android:textColor="@color/White"
         android:textSize="18sp"
         android:textStyle="bold" />
     <ImageView

@@ -20,6 +20,8 @@ import android.widget.Toolbar;
 
 import java.util.Objects;
 
+import jp.wasabeef.blurry.Blurry;
+
 
 public class FixtureActivity extends AppCompatActivity{
     FloatingActionButton floatingActionButton;
@@ -75,8 +77,6 @@ public class FixtureActivity extends AppCompatActivity{
         toolbar= findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Fixtures");
-
-
     }
 
     public void swipeAction(){
