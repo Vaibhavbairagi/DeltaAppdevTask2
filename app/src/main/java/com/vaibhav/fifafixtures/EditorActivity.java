@@ -2,6 +2,7 @@ package com.vaibhav.fifafixtures;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.DatePickerDialog;
 import android.app.FragmentTransaction;
 import android.app.TimePickerDialog;
 import android.content.ActivityNotFoundException;
@@ -14,6 +15,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -33,6 +35,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -59,6 +62,7 @@ public class EditorActivity extends AppCompatActivity implements TimePickerDialo
     public static final int REQUEST_CAMERA_CODE = 10;
     public static final int EXTERNAL_REQUEST_CODE = 13;
     public static final int INTERNAL_REQUEST_CODE = 19;
+    private DatePickerDialog.OnDateSetListener mDatesetListener;
     Spinner team1spinner,team2spinner,groupnamespinner;
     MyDatabase myDB = new MyDatabase(this);
     Button done;
@@ -69,7 +73,7 @@ public class EditorActivity extends AppCompatActivity implements TimePickerDialo
     ImageView team1logo,team2logo,calender,ediotrback,clock,venueselect;
     ArrayAdapter team1adapter,team2adapter,groupadapter;
     RelativeLayout relativeLayout;
-    EditText datetext,timetext,venuetext;
+    TextView datetext,timetext,venuetext;
     View grpview,team1view,team2view;
     int REQUEST_CAMERA=1,REQUEST_GALLERY=0,REQUEST_CROP=2,t;
     String mgrp,mteam1,mteam2,mdate=null,mtime=null,mvenue=null;
@@ -93,10 +97,29 @@ public class EditorActivity extends AppCompatActivity implements TimePickerDialo
         setImageClickListeners();
         spinnerActivities();
         done.setOnClickListener(DoneClick);
-        calender.setOnClickListener(datepickerlistener);
+        calender.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar cal=Calendar.getInstance();
+                int year=cal.get(Calendar.YEAR);
+                int month=cal.get(Calendar.MONTH);
+                int day=cal.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog dateDialogue=new DatePickerDialog(EditorActivity.this,android.R.style.Theme_Holo_Light_Dialog_MinWidth,mDatesetListener,year,month,day);
+                dateDialogue.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dateDialogue.show();
+            }
+        });
+
+        mDatesetListener =new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                month=month+1;
+                String date=dayOfMonth+"-"+month+"-"+year;
+                datetext.setText(date);
+            }
+        };
         clock.setOnClickListener(timepicker);
         venueselect.setOnClickListener(venuelistopener);
-        DateDialogue.view= datetext;
         if (FixtureActivity.editor==1){
             datetext.setText(editorinfo.cdate);
             timetext.setText(editorinfo.ctime);
@@ -154,14 +177,6 @@ public class EditorActivity extends AppCompatActivity implements TimePickerDialo
         }
     };
 
-    public View.OnClickListener datepickerlistener=new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            DateDialogue dateDialogue=new DateDialogue();
-            FragmentTransaction ft= getFragmentManager().beginTransaction();
-            dateDialogue.show(ft,"DatePicker");
-        }
-    };
 
     public View.OnClickListener DoneClick=new View.OnClickListener() {
         @Override
@@ -323,8 +338,7 @@ public class EditorActivity extends AppCompatActivity implements TimePickerDialo
                 uri=BitmaptoUri(bmp);
                 Uri dest=Uri.fromFile(new File(getCacheDir(),"cropped"));
                 Crop.of(uri,dest).asSquare().start(this);
-            }
-            else if (requestCode == REQUEST_GALLERY) {
+            } else if (requestCode == REQUEST_GALLERY) {
                 if (data!=null){
                     uri=data.getData();
                     Uri dest=Uri.fromFile(new File(getCacheDir(),"cropped"));
@@ -348,7 +362,7 @@ public class EditorActivity extends AppCompatActivity implements TimePickerDialo
     public Uri BitmaptoUri(Bitmap inImage){
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), inImage, "tempImage", null);
+        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
     }
 
